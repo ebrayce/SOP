@@ -1,18 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet"
+          type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/eva-icons@^1.0.0/style/eva-icons.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@^4.0.0/animate.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+    <link href="app.css" rel="stylesheet" type="text/css">
+    <title></title>
 </head>
 
 <body>
-<div id="q-app">
+    <div>
+        <div class="boxOne"></div>
+        <div class="boxTwo"></div>
+        <div class="boxThree"></div>
+    </div>
 
+<div  id="q-app">
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.umd.prod.js"></script>
+<script src="main.js"></script>
+<script>
+    const app = Vue.createApp({
+        setup() {
+            return {}
+        }
+    })
+
+    app.use(Quasar)
+    app.mount('#q-app')
+    Quasar.Notify.create('Hi and welcome!')
+</script>
 </body>
 </html>
