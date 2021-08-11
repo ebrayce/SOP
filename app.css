@@ -1,43 +1,67 @@
-.boxOne{
-    background-color: rgba(187, 29, 53, 0.5);
-    width: 50px;
-    height: 50px;
-    animation:animater 1s ease infinite;
-}
-.boxTwo {
-    background-color: green;
-    width: 50px;
-    height: 50px;
-}
-.boxThree{
-    background-color: rgba(24, 203, 203, 0.5);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 50px;
-    height: 50px;
-}
-@keyframes animater{
-    30%{
-        transform:scale(2);
-        background-color: indigo;
-        border-radius: 2px;
-    }
-    40%{
-        transform:rotate(-225deg);
-        border-radius: 4px;
-    }
-    50%{
-        transform:rotate(-225deg);
-        border-radius: 6px;
-    }
-    80%{
-        transform:rotate(-45deg);
-        border-radius: 20px;
+/* Color Theme Swatches in Hex */
+.Winter-Sunset-1-hex { color: #2B3240; }
+.Winter-Sunset-2-hex { color: #8596A6; }
+.Winter-Sunset-3-hex { color: #F2DE77; }
+.Winter-Sunset-4-hex { color: #F2BF80; }
+.Winter-Sunset-5-hex { color: #F2994B; }
 
-    }
-    90%{
-        transform:rotate(-45deg);
-    }
-    100%{
-        transform:rotate(-45deg);
-    }
+.logo-font{
+    font-family: 'Clicker Script', cursive;
+    font-size: 30px
 }
+.constraint{
+    max-width: 500px
+}
+
+.constraint-more{
+    max-width: 300px
+}
+
+/* Color Theme Swatches in RGBA */
+.Winter-Sunset-1-rgba { color: rgba(42, 49, 63, 1); }
+.Winter-Sunset-2-rgba { color: rgba(133, 149, 165, 1); }
+.Winter-Sunset-3-rgba { color: rgba(242, 221, 119, 1); }
+.Winter-Sunset-4-rgba { color: rgba(242, 191, 128, 1); }
+.Winter-Sunset-5-rgba { color: rgba(242, 153, 75, 1); }
+.loader-wrapper {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-color: #8596A6;
+}
+.loader
+{
+    position:absolute ;
+    margin:auto;
+    right:0;
+    left:0;
+    top:0;
+    bottom:0;
+    border-radius: 50%;
+    border: 16px solid #F2994B;
+    border-right-color: #2B3240;
+    border-bottom-color: #F2BF80;
+    border-left-color: #F2DE77;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; animation: spin 2s linear infinite; }
+
+@-webkit-keyframes spin
+{
+    0%
+    {
+        -webkit-transform: rotate(0deg);
+    } 100%
+      {
+          -webkit-transform: rotate(360deg);
+      }
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    } 100%
+      {
+          transform: rotate(360deg);
+      }
+}
+[v-cloak] {display: none}
