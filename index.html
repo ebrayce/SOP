@@ -36,17 +36,14 @@
                     v-model="drawer"
             >
                 <q-scroll-area class="fit">
-                    <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
-                        <div class="absolute-bottom bg-transparent">
-                            <q-avatar class="q-mb-sm" size="56px">
-                                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-                            </q-avatar>
-                            <div class="text-weight-bold">Razvan Stoenescu</div>
-                            <div>@rstoenescu</div>
-                        </div>
-                    </q-img>
+                    <div class="bg-secondary q-pa-lg">
+                        <q-avatar class="q-mb-sm" size="56px">
+                            <img src="https://res.cloudinary.com/ebrayce/image/upload/v1609853242/134120747_865218274279882_770505659412948779_o.jpg_bgahnf.jpg">
+                        </q-avatar>
+                        <div class="text-weight-bold">{{me.name}}</div>
+                        <div>{{me.username}}</div>
+                    </div>
                     <q-list>
-
                         <template v-for="(menuItem, index) in menuList">
                             <q-item :active="menuItem.id === state" :key="index" @click="navigateTo(menuItem.id)"
                                     clickable v-ripple>
@@ -64,17 +61,20 @@
                 </q-scroll-area>
 
             </q-drawer>
-            <q-page-container class="constraint q-mx-auto">
-                <q-dialog persistent max-width="500" v-model="isShowingAddItemDialog">
+            <q-page-container class="">
+
+                <q-dialog max-width="500" persistent position="top" v-model="isShowingAddItemDialog">
                     <q-card class="q-px-lg" style="min-width: 350px">
                         <q-form
                                 @submit="addToItems"
                                 class="q-gutter-md"
                         >
                             <q-toolbar>
-                                <q-toolbar-title class="text-h6 text-center text-primary">Add Item</q-toolbar-title>
+                                <q-toolbar-title class="text-h6 text-center text-primary">{{isEditing ? 'Update Item' :
+                                    'Add Item'}}
+                                </q-toolbar-title>
 
-                                <q-btn flat round dense icon="close" @click="resetForm" v-close-popup></q-btn>
+                                <q-btn @click="resetForm" dense flat icon="close" round v-close-popup></q-btn>
                             </q-toolbar>
 
 
@@ -87,7 +87,7 @@
                             </q-input>
 
                             <q-input class="q-mb-md" color="grey-3" label="Price" label-color="orange" outlined
-                                     type="number" step="0.01" v-model.number="formItem.price">
+                                     step="0.01" type="number" v-model.number="formItem.price">
                                 <template v-slot:append>
                                     <q-icon color="primary" name="attach_money"></q-icon>
                                 </template>
@@ -95,10 +95,11 @@
 
                             <q-card-actions :class="`text-primary ${isEditing ? 'justify-between': 'justify-end'} `">
 
-                                <q-btn v-if="isEditing" @click="removeItemById" color="red" flat label="Remove"
-                                       v-close-popup></q-btn>
+                                <q-btn @click="removeItemById" color="red" flat label="Remove" v-close-popup
+                                       v-if="isEditing"></q-btn>
 
-                                <q-btn type="submit" color="primary" :label="`${isEditing? 'Update' : 'Add'}`" outlined ></q-btn>
+                                <q-btn :label="`${isEditing? 'Update' : 'Add'}`" color="primary" outlined
+                                       type="submit"></q-btn>
                             </q-card-actions>
                         </q-form>
 
@@ -107,7 +108,55 @@
                 </q-dialog>
                 <q-dialog v-model="isShowingFinanceDialog">
                     <q-card class="my-card">
+                        <div class="q-pa-md" style="max-width: 400px">
 
+                            <q-form
+                                    @reset="onReset"
+                                    @submit="onSubmit"
+                                    class="q-gutter-md"
+                            >
+                                <q-input :rules="[ val => val && val.length > 0 || 'Please type something']"
+                                         filled
+                                         color="grey-3"
+                                         label-color="orange"
+                                         hint="Your full name."
+                                         label="Your name *"
+                                         lazy-rules
+                                         v-model="me.name"
+                                ></q-input>
+
+                                <q-input class="q-mb-md" color="grey-3" label="Income" label-color="orange" filled
+                                         step="0.01" type="number" v-model.number="me.disposableIncome">
+                                    <template v-slot:append>
+                                        <q-icon color="primary" name="attach_money"></q-icon>
+                                    </template>
+                                </q-input>
+
+                                <q-select use-input color="grey-3"
+                                          label-color="orange" input-debounce="0" behavior="menu"
+                                          @filter="filterFn" filled emit-value v-model="me.selectedCurrency" :options="currencyList" label="Currency" >
+                                    <template v-slot:no-option>
+                                        <q-item>
+                                            <q-item-section class="text-grey">
+                                                No results
+                                            </q-item-section>
+                                        </q-item>
+                                    </template>
+                                </q-select>
+
+
+                                <q-input
+                                        color="grey-3"
+                                        label-color="orange"
+                                        :rules="[val => val !== null && val !== '' || 'Please type your Username']"
+                                        filled
+                                        label="Your Username *"
+                                        lazy-rules
+                                        v-model="me.username"
+                                ></q-input>
+                            </q-form>
+
+                        </div>
                     </q-card>
                 </q-dialog>
                 <q-dialog v-model="isShowingInfoDialog">
@@ -116,73 +165,160 @@
                     </q-card>
                 </q-dialog>
 
-                <!--                Finance -->
-                <div v-if="state === 2">
-                    Finance
+                <div class="row justify-center">
+                    <div class="col-12 col-md-4">
+
+                        <div v-if="state === 2">
+                            Finance Here
+                        </div>
+
+                        <!--                Help    -->
+                        <div class="q-pa-md q-gutter-md" v-else-if="state === 3">
+                            <q-card bordered class="my-card" flat>
+                                <q-card-section>
+                                    <div class="text-h6">What is a Scale of Preference</div>
+                                </q-card-section>
+
+                                <q-card-section class="q-pt-none">
+                                    A scale of preference can be defined as the list of
+                                    wants or needs that a person writes or comes up with
+                                    in order of importance.
+                                </q-card-section>
+
+                                <q-separator inset></q-separator>
+
+                                <q-card-section>
+                                    <div class="text-h6">Importance of a scale of preference</div>
+                                </q-card-section>
+
+                                <q-card-section>
+                                    A scale of preference helps an individual, a firm or a government to make rational
+                                    use of available resources to satisfy the most important want.
+                                </q-card-section>
+                            </q-card>
+                        </div>
+
+                        <!--                Settings    -->
+                        <div v-else-if="state === 4">
+                            <div>Settings</div>
+                        </div>
+
+                        <!--                About   -->
+                        <div class="q-pa-md q-gutter-md" v-else-if="state === 5">
+                            <q-card bordered class="my-card" flat>
+                                <q-card-section>
+                                    <div class="text-h6">Credit</div>
+                                </q-card-section>
+
+                                <q-card-section class="q-pt-none">
+                                    A very big thanks goes to
+                                    <q-badge color="primary" label="Tapabrata Banerjee" outline></q-badge>
+                                    for a wonderful Page Loader.
+                                </q-card-section>
+
+                                <q-separator inset></q-separator>
+
+                                <q-card-section>
+                                    <div class="text-h6">Frameworks Used</div>
+                                    <q-list bordered class="rounded-borders" dense padding>
+                                        <q-item clickable v-ripple>
+                                            <q-item-section>
+                                                1. Vue JS
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable v-ripple>
+                                            <q-item-section>
+                                                2. Quasar
+                                            </q-item-section>
+                                        </q-item>
+
+                                        <q-item clickable v-ripple>
+                                            <q-item-section>
+                                                3. Animate CSS
+                                            </q-item-section>
+                                        </q-item>
+                                    </q-list>
+                                </q-card-section>
+
+
+                            </q-card>
+
+                        </div>
+
+                        <div class="q-pa-md q-gutter-md" v-else>
+
+                            <q-card class="my-card">
+                                <q-card-section class="bg-primary text-white">
+                                    <div class="text-h6">List Of Items</div>
+                                    <div class="text-subtitle2">Income: {{ $filters.currency(me.disposableIncome,
+                                        me.selectedCurrency) }}
+                                        <q-btn @click="showFinance" color="white" flat icon="edit" round
+                                               size="sm"></q-btn>
+                                    </div>
+                                </q-card-section>
+
+                                <q-separator></q-separator>
+
+
+                                <q-list bordered class="rounded-borders" separator>
+                                    <template v-if="items.length === 0">
+                                        <q-item :key="n" v-for="n in 5">
+                                            <q-item-section avatar>
+                                                <q-skeleton type="QAvatar"></q-skeleton>
+                                            </q-item-section>
+
+                                            <q-item-section>
+                                                <q-item-label>
+                                                    <q-skeleton></q-skeleton>
+                                                </q-item-label>
+                                                <q-item-label caption>
+                                                    <q-skeleton type="text" width="35%"></q-skeleton>
+                                                </q-item-label>
+                                            </q-item-section>
+                                            <q-item-section avatar>
+                                                <q-skeleton type="QAvatar"></q-skeleton>
+                                            </q-item-section>
+                                        </q-item>
+                                    </template>
+                                    <transition-group leave-active-class="animate__animated animate__backOutDown">
+                                        <template :key="item.id" v-for="(item, index) in updateCanPurchase">
+                                            <q-item :class="`${item.canBuy ? 'bg-secondary':''}`" v-ripple>
+                                                <q-item-section @click="moveDown(item.id)" avatar clickable top>
+                                                    <q-avatar
+                                                            :icon="`${index < items.length - 1 ? 'arrow_downward': 'more_horiz'}`"></q-avatar>
+                                                </q-item-section>
+
+                                                <q-item-section @click="editItemById(item.id)">
+                                                    <q-item-label lines="1">{{item.name}}</q-item-label>
+                                                    <q-item-label caption>{{ $filters.currency(item.price, me.selectedCurrency) }}</q-item-label>
+                                                </q-item-section>
+
+                                                <q-item-section @click="moveUp(item.id)" avatar clickable top>
+                                                    <q-avatar
+                                                            :icon="`${index > 0 ? 'arrow_upward': 'more_horiz'}`"></q-avatar>
+                                                </q-item-section>
+
+                                            </q-item>
+                                        </template>
+
+                                    </transition-group>
+
+                                </q-list>
+                            </q-card>
+
+
+                        </div>
+
+                    </div>
                 </div>
 
-                <!--                Help    -->
-                <div v-else-if="state === 3">
-                    <div>Help</div>
-                </div>
-
-                <!--                Settings    -->
-                <div v-else-if="state === 4">
-                    <div>Settings</div>
-                </div>
-
-                <!--                About   -->
-                <div v-else-if="state === 5">
-                    <div>About Page</div>
-
-                </div>
-
-                <div class="q-pa-md q-gutter-md" v-else>
-                    <q-list bordered class="rounded-borders" padding separator>
-                        <template v-if="items.length === 0">
-                            <q-item  :key="n" v-for="n in 5">
-                                <q-item-section avatar>
-                                    <q-skeleton type="QAvatar"></q-skeleton>
-                                </q-item-section>
-
-                                <q-item-section >
-                                    <q-item-label>
-                                        <q-skeleton></q-skeleton>
-                                    </q-item-label>
-                                    <q-item-label caption>
-                                        <q-skeleton type="text" width="35%"></q-skeleton>
-                                    </q-item-label>
-                                </q-item-section>
-                                <q-item-section avatar>
-                                    <q-skeleton type="QAvatar"></q-skeleton>
-                                </q-item-section>
-                            </q-item>
-                        </template>
-
-                        <transition-group leave-active-class="animate__animated animate__backOutDown">
-                            <template :key="item.id"  v-for="item in items">
-                                <q-item  v-ripple>
-                                    <q-item-section clickable avatar top>
-                                        <q-avatar icon="folder"></q-avatar>
-                                    </q-item-section>
-
-                                    <q-item-section @click="editItemById(item.id)">
-                                        <q-item-label lines="1">{{item.name}}</q-item-label>
-                                        <q-item-label caption>{{item.price}} | {{item.id}}</q-item-label>
-                                    </q-item-section>
-
-                                    <q-item-section side>
-                                        <q-icon color="green" name="info"></q-icon>
-                                    </q-item-section>
-                                </q-item>
-                            </template>
-
-                        </transition-group>
-
-                    </q-list>
-                </div>
             </q-page-container>
-            <q-btn @click="showAddItemDialog" class="fixed-bottom-right q-mr-md q-mb-md lt-md" color="primary" icon="add" round
+            <q-btn @click="showAddItemDialog" class="fixed-top-right q-mr-md q-mb-md gt-sm" color="primary"
+                   icon="add" round size="lg"
+                   style="right: 20%; top: 10%"></q-btn>
+            <q-btn @click="showAddItemDialog" class="fixed-bottom-right q-mr-md q-mb-md lt-md" color="primary"
+                   icon="add" round
                    size="lg"></q-btn>
 
         </q-layout>
