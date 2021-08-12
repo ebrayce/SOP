@@ -17,12 +17,12 @@ const menuList = [
         label: 'Help',
         separator: true
     },
-    // {
-    //     id: 4,
-    //     icon: 'settings',
-    //     label: 'Settings',
-    //     separator: true
-    // },
+    {
+        id: 4,
+        icon: 'settings',
+        label: 'Settings',
+        separator: true
+    },
     {
         id: 5,
         icon: 'privacy_tip',
@@ -30,7 +30,7 @@ const menuList = [
         separator: true
     }
 ]
-let currencyList = [{label:"Albania Lek",value:"ALL"},{label:"Afghanistan Afghani",value:"AFN"},{label:"Argentina Peso",value:"ARS"},{label:"Aruba Guilder",value:"AWG"},{label:"Australia Dollar",value:"AUD"},{label:"Azerbaijan New Manat",value:"AZN"},{label:"Bahamas Dollar",value:"BSD"},{label:"Barbados Dollar",value:"BBD"},{label:"Bangladeshi taka",value:"BDT"},{label:"Belarus Ruble",value:"BYR"},{label:"Belize Dollar",value:"BZD"},{label:"Bermuda Dollar",value:"BMD"},{label:"Bolivia Boliviano",value:"BOB"},{label:"Bosnia and Herzegovina Convertible Marka",value:"BAM"},{label:"Botswana Pula",value:"BWP"},{label:"Bulgaria Lev",value:"BGN"},{label:"Brazil Real",value:"BRL"},{label:"Brunei Darussalam Dollar",value:"BND"},{label:"Cambodia Riel",value:"KHR"},{label:"Canada Dollar",value:"CAD"},{label:"Cayman Islands Dollar",value:"KYD"},{label:"Chile Peso",value:"CLP"},{label:"China Yuan Renminbi",value:"CNY"},{label:"Colombia Peso",value:"COP"},{label:"Costa Rica Colon",value:"CRC"},{label:"Croatia Kuna",value:"HRK"},{label:"Cuba Peso",value:"CUP"},{label:"Czech Republic Koruna",value:"CZK"},{label:"Denmark Krone",value:"DKK"},{label:"Dominican Republic Peso",value:"DOP"},{label:"East Caribbean Dollar",value:"XCD"},{label:"Egypt Pound",value:"EGP"},{label:"El Salvador Colon",value:"SVC"},{label:"Euro Member Countries",value:"EUR"},{label:"Falkland Islands (Malvinas) Pound",value:"FKP"},{label:"Fiji Dollar",value:"FJD"},{label:"Ghana Cedis",value:"GHC"},{label:"Gibraltar Pound",value:"GIP"},{label:"Guatemala Quetzal",value:"GTQ"},{label:"Guernsey Pound",value:"GGP"},{label:"Guyana Dollar",value:"GYD"},{label:"Honduras Lempira",value:"HNL"},{label:"Hong Kong Dollar",value:"HKD"},{label:"Hungary Forint",value:"HUF"},{label:"Iceland Krona",value:"ISK"},{label:"India Rupee",value:"INR"},{label:"Indonesia Rupiah",value:"IDR"},{label:"Iran Rial",value:"IRR"},{label:"Isle of Man Pound",value:"IMP"},{label:"Israel Shekel",value:"ILS"},{label:"Jamaica Dollar",value:"JMD"},{label:"Japan Yen",value:"JPY"},{label:"Jersey Pound",value:"JEP"},{label:"Kazakhstan Tenge",value:"KZT"},{label:"Korea (North) Won",value:"KPW"},{label:"Korea (South) Won",value:"KRW"},{label:"Kyrgyzstan Som",value:"KGS"},{label:"Laos Kip",value:"LAK"},{label:"Lebanon Pound",value:"LBP"},{label:"Liberia Dollar",value:"LRD"},{label:"Macedonia Denar",value:"MKD"},{label:"Malaysia Ringgit",value:"MYR"},{label:"Mauritius Rupee",value:"MUR"},{label:"Mexico Peso",value:"MXN"},{label:"Mongolia Tughrik",value:"MNT"},{label:"Mozambique Metical",value:"MZN"},{label:"Namibia Dollar",value:"NAD"},{label:"Nepal Rupee",value:"NPR"},{label:"Netherlands Antilles Guilder",value:"ANG"},{label:"New Zealand Dollar",value:"NZD"},{label:"Nicaragua Cordoba",value:"NIO"},{label:"Nigeria Naira",value:"NGN"},{label:"Norway Krone",value:"NOK"},{label:"Oman Rial",value:"OMR"},{label:"Pakistan Rupee",value:"PKR"},{label:"Panama Balboa",value:"PAB"},{label:"Paraguay Guarani",value:"PYG"},{label:"Peru Nuevo Sol",value:"PEN"},{label:"Philippines Peso",value:"PHP"},{label:"Poland Zloty",value:"PLN"},{label:"Qatar Riyal",value:"QAR"},{label:"Romania New Leu",value:"RON"},{label:"Russia Ruble",value:"RUB"},{label:"Saint Helena Pound",value:"SHP"},{label:"Saudi Arabia Riyal",value:"SAR"},{label:"Serbia Dinar",value:"RSD"},{label:"Seychelles Rupee",value:"SCR"},{label:"Singapore Dollar",value:"SGD"},{label:"Solomon Islands Dollar",value:"SBD"},{label:"Somalia Shilling",value:"SOS"},{label:"South Africa Rand",value:"ZAR"},{label:"Sri Lanka Rupee",value:"LKR"},{label:"Sweden Krona",value:"SEK"},{label:"Switzerland Franc",value:"CHF"},{label:"Suriname Dollar",value:"SRD"},{label:"Syria Pound",value:"SYP"},{label:"Taiwan New Dollar",value:"TWD"},{label:"Thailand Baht",value:"THB"},{label:"Trinidad and Tobago Dollar",value:"TTD"},{label:"Turkey Lira",value:"TRY"},{label:"Turkey Lira",value:"TRL"},{label:"Tuvalu Dollar",value:"TVD"},{label:"Ukraine Hryvna",value:"UAH"},{label:"United Kingdom Pound",value:"GBP"},{label:"Uganda Shilling",value:"UGX"},{label:"United States Dollar",value:"USD"},{label:"Uruguay Peso",value:"UYU"},{label:"Uzbekistan Som",value:"UZS"},{label:"Venezuela Bolivar",value:"VEF"},{label:"Viet Nam Dong",value:"VND"},{label:"Yemen Rial",value:"YER"},{label:"Zimbabwe Dollar",value:"ZWD"}]
+let currencyList = [{label:"Albania Lek entirley ",value:"ALL"},{label:"Afghanistan Afghani",value:"AFN"},{label:"Argentina Peso",value:"ARS"},{label:"Aruba Guilder",value:"AWG"},{label:"Australia Dollar",value:"AUD"},{label:"Azerbaijan New Manat",value:"AZN"},{label:"Bahamas Dollar",value:"BSD"},{label:"Barbados Dollar",value:"BBD"},{label:"Bangladeshi taka",value:"BDT"},{label:"Belarus Ruble",value:"BYR"},{label:"Belize Dollar",value:"BZD"},{label:"Bermuda Dollar",value:"BMD"},{label:"Bolivia Boliviano",value:"BOB"},{label:"Bosnia and Herzegovina Convertible Marka",value:"BAM"},{label:"Botswana Pula",value:"BWP"},{label:"Bulgaria Lev",value:"BGN"},{label:"Brazil Real",value:"BRL"},{label:"Brunei Darussalam Dollar",value:"BND"},{label:"Cambodia Riel",value:"KHR"},{label:"Canada Dollar",value:"CAD"},{label:"Cayman Islands Dollar",value:"KYD"},{label:"Chile Peso",value:"CLP"},{label:"China Yuan Renminbi",value:"CNY"},{label:"Colombia Peso",value:"COP"},{label:"Costa Rica Colon",value:"CRC"},{label:"Croatia Kuna",value:"HRK"},{label:"Cuba Peso",value:"CUP"},{label:"Czech Republic Koruna",value:"CZK"},{label:"Denmark Krone",value:"DKK"},{label:"Dominican Republic Peso",value:"DOP"},{label:"East Caribbean Dollar",value:"XCD"},{label:"Egypt Pound",value:"EGP"},{label:"El Salvador Colon",value:"SVC"},{label:"Euro Member Countries",value:"EUR"},{label:"Falkland Islands (Malvinas) Pound",value:"FKP"},{label:"Fiji Dollar",value:"FJD"},{label:"Ghana Cedis",value:"GHC"},{label:"Gibraltar Pound",value:"GIP"},{label:"Guatemala Quetzal",value:"GTQ"},{label:"Guernsey Pound",value:"GGP"},{label:"Guyana Dollar",value:"GYD"},{label:"Honduras Lempira",value:"HNL"},{label:"Hong Kong Dollar",value:"HKD"},{label:"Hungary Forint",value:"HUF"},{label:"Iceland Krona",value:"ISK"},{label:"India Rupee",value:"INR"},{label:"Indonesia Rupiah",value:"IDR"},{label:"Iran Rial",value:"IRR"},{label:"Isle of Man Pound",value:"IMP"},{label:"Israel Shekel",value:"ILS"},{label:"Jamaica Dollar",value:"JMD"},{label:"Japan Yen",value:"JPY"},{label:"Jersey Pound",value:"JEP"},{label:"Kazakhstan Tenge",value:"KZT"},{label:"Korea (North) Won",value:"KPW"},{label:"Korea (South) Won",value:"KRW"},{label:"Kyrgyzstan Som",value:"KGS"},{label:"Laos Kip",value:"LAK"},{label:"Lebanon Pound",value:"LBP"},{label:"Liberia Dollar",value:"LRD"},{label:"Macedonia Denar",value:"MKD"},{label:"Malaysia Ringgit",value:"MYR"},{label:"Mauritius Rupee",value:"MUR"},{label:"Mexico Peso",value:"MXN"},{label:"Mongolia Tughrik",value:"MNT"},{label:"Mozambique Metical",value:"MZN"},{label:"Namibia Dollar",value:"NAD"},{label:"Nepal Rupee",value:"NPR"},{label:"Netherlands Antilles Guilder",value:"ANG"},{label:"New Zealand Dollar",value:"NZD"},{label:"Nicaragua Cordoba",value:"NIO"},{label:"Nigeria Naira",value:"NGN"},{label:"Norway Krone",value:"NOK"},{label:"Oman Rial",value:"OMR"},{label:"Pakistan Rupee",value:"PKR"},{label:"Panama Balboa",value:"PAB"},{label:"Paraguay Guarani",value:"PYG"},{label:"Peru Nuevo Sol",value:"PEN"},{label:"Philippines Peso",value:"PHP"},{label:"Poland Zloty",value:"PLN"},{label:"Qatar Riyal",value:"QAR"},{label:"Romania New Leu",value:"RON"},{label:"Russia Ruble",value:"RUB"},{label:"Saint Helena Pound",value:"SHP"},{label:"Saudi Arabia Riyal",value:"SAR"},{label:"Serbia Dinar",value:"RSD"},{label:"Seychelles Rupee",value:"SCR"},{label:"Singapore Dollar",value:"SGD"},{label:"Solomon Islands Dollar",value:"SBD"},{label:"Somalia Shilling",value:"SOS"},{label:"South Africa Rand",value:"ZAR"},{label:"Sri Lanka Rupee",value:"LKR"},{label:"Sweden Krona",value:"SEK"},{label:"Switzerland Franc",value:"CHF"},{label:"Suriname Dollar",value:"SRD"},{label:"Syria Pound",value:"SYP"},{label:"Taiwan New Dollar",value:"TWD"},{label:"Thailand Baht",value:"THB"},{label:"Trinidad and Tobago Dollar",value:"TTD"},{label:"Turkey Lira",value:"TRY"},{label:"Turkey Lira",value:"TRL"},{label:"Tuvalu Dollar",value:"TVD"},{label:"Ukraine Hryvna",value:"UAH"},{label:"United Kingdom Pound",value:"GBP"},{label:"Uganda Shilling",value:"UGX"},{label:"United States Dollar",value:"USD"},{label:"Uruguay Peso",value:"UYU"},{label:"Uzbekistan Som",value:"UZS"},{label:"Venezuela Bolivar",value:"VEF"},{label:"Viet Nam Dong",value:"VND"},{label:"Yemen Rial",value:"YER"},{label:"Zimbabwe Dollar",value:"ZWD"}]
 
 window.onload = () => {
     setTimeout(()=>{
@@ -49,6 +49,7 @@ window.onload = () => {
                     isEditing: false,
                     editedItemId: undefined,
                     isShowingFinanceDialog: false,
+                    isShowingEditDataDialog: false,
                     isShowingAddItemDialog: false,
                     isShowingInfoDialog: false,
                     isShowingLoader: true,
@@ -57,6 +58,7 @@ window.onload = () => {
                     drawer: true,
                     items: [],
                     state: 1,
+                    editData: "",
 
                     formItem: {
                         name:"",
@@ -151,9 +153,59 @@ window.onload = () => {
                     this.editedItemId = undefined
                     this.isShowingAddItemDialog = false
                     this.formItem = Object.assign({}, this.defaultFormItem)
-                }
+                },
+                saveToBrowser(){
+                    let data = {}
+                    data.me = Object.assign({}, this.me)
+                    data.items = this.items
+                    try{
+                        localStorage.setItem("myData", JSON.stringify(data))
+                        this.$q.notify({message:'Data Saved successfully',color: 'primary'})
+                    }catch (e) {
+                        this.$q.notify({message:'Oops An error Occurred',color: 'red'})
+                    }
+
+                },
+                loadFromBrowser(){
+                    try{
+                        let data = JSON.parse(localStorage.getItem("myData"))
+                        this.update(data)
+                    }catch (e) {
+                        this.$q.notify({message:'Oops An error Occurred',color: 'red'})
+                    }
+                },
+                update(data){
+                    this.me =  Object.assign({},data.me )
+                    this.items = Array.isArray(data.items) ? data.items : []
+                    this.$q.notify({message:'Data Loaded successfully',color: 'primary'})
+                },
+                copyData(){
+                    navigator.clipboard.writeText(this.myData).then(()=>{
+                        this.$q.notify({message:'Data Copied successfully',color: 'primary'})
+                    }).catch(()=>{
+                        this.$q.notify({message:'Oops something went wrong',color: 'red'})
+                    })
+                },
+
+                manualDataLoad(){
+                    this.isShowingEditDataDialog = true
+                },
+                manualDataLoadSubmit(){
+                    try {
+                        let data = JSON.parse(this.editData)
+                        this.update(data)
+                    }catch (e) {
+                        this.$q.notify({message:'Oops Data Corrupted',color: 'red'})
+                    }
+                },
             },
             computed: {
+                myData(){
+                    let data = {}
+                    data.me = Object.assign({}, this.me)
+                    data.items = Object.assign({}, this.items)
+                    return JSON.stringify(data)
+                },
                 updateCanPurchase(){
                     let disposableIncome = this.me.disposableIncome
                     this.items.forEach(item => {
@@ -161,7 +213,7 @@ window.onload = () => {
                         disposableIncome -= item.price
                     })
                     return this.items
-                }
+                },
             },
             mounted(){
                 this.hideLoader()
@@ -189,8 +241,7 @@ window.onload = () => {
                     dark: '#2B3240',
                     gray: '#8596A6',
                     // ... or all other brand colors
-                },
-
+                }
             }
         })
         app.mount('#q-app')
