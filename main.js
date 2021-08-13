@@ -39,6 +39,9 @@ window.onload = () => {
                 return {
                     menuList,
                     currencyList,
+                    images:[
+                        'https://res.cloudinary.com/ebrayce/image/upload/v1628870060/Screenshot_08-13-2021_15.54.06_oymrwn.png'
+                    ],
                     me: {
                         avatar: "https://res.cloudinary.com/ebrayce/image/upload/v1609853242/134120747_865218274279882_770505659412948779_o.jpg_bgahnf.jpg",
                         selectedCurrency: "USD",
@@ -48,6 +51,7 @@ window.onload = () => {
                     },
                     isEditing: false,
                     editedItemId: undefined,
+                    isShowingImageDialog: false,
                     isShowingFinanceDialog: false,
                     isShowingEditDataDialog: false,
                     isShowingAddItemDialog: false,
@@ -59,6 +63,7 @@ window.onload = () => {
                     items: [],
                     state: 1,
                     editData: "",
+                    imageUrl: "",
 
                     formItem: {
                         name:"",
@@ -75,6 +80,10 @@ window.onload = () => {
                     this.state = id
                     this.drawer = false
                 },
+                showImage(img){
+                    this.imageUrl = img
+                    this.isShowingImageDialog = true;
+                },
                 hideLoader(){
                     this.isShowingLoader = false;
                 },
@@ -88,7 +97,7 @@ window.onload = () => {
                     this.isShowingAddItemDialog = false
                     if (this.isEditing){
                         let index = this.getItemIndex(this.formItem.id)
-                        this.items.splice(index,1,this.formItem)
+                        this.items.splice(index,1, Object.assign({},this.formItem))
                     }else {
                         this.formItem.id = Date.now().toString()
                         this.items.push(Object.assign({}, this.formItem))
@@ -96,9 +105,9 @@ window.onload = () => {
                     this.resetForm()
                     this.navigateTo(1)
                 },
-                editItemById(itemId){
+                editItemById: function (itemId) {
                     let index = this.getItemIndex(itemId)
-                    let i = this.items[index]
+                    const i = this.items[index];
                     this.formItem = Object.assign({}, i)
                     this.isEditing = true;
                     this.editedItemId = itemId
@@ -194,6 +203,7 @@ window.onload = () => {
                     this.isShowingEditDataDialog = true
                 },
                 manualDataLoadSubmit(){
+                    this.isShowingEditDataDialog = false
                     try {
                         let data = JSON.parse(this.editData)
                         this.update(data)

@@ -37,9 +37,24 @@
             >
                 <q-scroll-area class="fit">
                     <div class="bg-secondary q-pa-lg">
-                        <q-avatar class="q-mb-sm" size="56px">
-                            <img :src="me.avatar">
-                        </q-avatar>
+
+                        <div class="cursor-pointer">
+                            <q-avatar class="q-mb-sm" size="56px">
+                                <img :src="me.avatar">
+                            </q-avatar>
+                            <q-btn  color="white" flat icon="edit" round size="sm"></q-btn>
+                            <q-popup-edit v-model="label" auto-save v-slot="scope">
+                                <q-input
+                                        color="grey-3"
+                                        label-color="orange"
+                                        filled
+                                        label="Link to avatar"
+                                        lazy-rules
+                                        v-model="me.avatar"
+                                ></q-input>
+                            </q-popup-edit>
+                        </div>
+
                         <div class="cursor-pointer">
                             <div class="text-weight-bold">{{me.name}} <q-btn  color="white" flat icon="edit" round
                                                                               size="sm"></q-btn></div>
@@ -139,22 +154,22 @@
                 </q-dialog>
                 <q-dialog v-model="isShowingFinanceDialog">
                     <q-card class="my-card">
-                        <div class="q-pa-md" style="max-width: 400px">
+                        <div class="q-pa-md" style="min-width: 350px">
 
                             <q-form
                                     @reset="onReset"
                                     @submit="onSubmit"
                                     class="q-gutter-md"
                             >
-                                <q-input :rules="[ val => val && val.length > 0 || 'Please type something']"
-                                         filled
-                                         color="grey-3"
-                                         label-color="orange"
-                                         hint="Your full name."
-                                         label="Your name *"
-                                         lazy-rules
-                                         v-model="me.name"
-                                ></q-input>
+<!--                                <q-input :rules="[ val => val && val.length > 0 || 'Please type something']"-->
+<!--                                         filled-->
+<!--                                         color="grey-3"-->
+<!--                                         label-color="orange"-->
+<!--                                         hint="Your full name."-->
+<!--                                         label="Your name *"-->
+<!--                                         lazy-rules-->
+<!--                                         v-model="me.name"-->
+<!--                                ></q-input>-->
 
                                 <q-input class="q-mb-md" color="grey-3" label="Income" label-color="orange" filled
                                          step="0.01" type="number" v-model.number="me.disposableIncome">
@@ -176,24 +191,24 @@
                                 </q-select>
 
 
-                                <q-input
-                                        color="grey-3"
-                                        label-color="orange"
-                                        :rules="[val => val !== null && val !== '' || 'Please type your Username']"
-                                        filled
-                                        label="Your Username *"
-                                        lazy-rules
-                                        v-model="me.username"
-                                ></q-input>
+<!--                                <q-input-->
+<!--                                        color="grey-3"-->
+<!--                                        label-color="orange"-->
+<!--                                        :rules="[val => val !== null && val !== '' || 'Please type your Username']"-->
+<!--                                        filled-->
+<!--                                        label="Your Username *"-->
+<!--                                        lazy-rules-->
+<!--                                        v-model="me.username"-->
+<!--                                ></q-input>-->
 
-                                <q-input
-                                        color="grey-3"
-                                        label-color="orange"
-                                        filled
-                                        label="Link to avatar *"
-                                        lazy-rules
-                                        v-model="me.avatar"
-                                ></q-input>
+<!--                                <q-input-->
+<!--                                        color="grey-3"-->
+<!--                                        label-color="orange"-->
+<!--                                        filled-->
+<!--                                        label="Link to avatar *"-->
+<!--                                        lazy-rules-->
+<!--                                        v-model="me.avatar"-->
+<!--                                ></q-input>-->
                             </q-form>
 
                         </div>
@@ -205,8 +220,16 @@
                     </q-card>
                 </q-dialog>
 
+                <q-dialog  v-model="isShowingImageDialog">
+                    <q-card style="min-width: 350px" class="my-card" >
+                        <q-img  :src="imageUrl" fit="scale-down"  >
+                            <q-btn class="absolute all-pointer-events"  style="top: 8px; right: 8px" dense flat icon="close" round v-close-popup></q-btn>
+                        </q-img>
+                    </q-card>
+                </q-dialog>
+
                 <q-dialog v-model="isShowingEditDataDialog">
-                    <q-card class="my-card">
+                    <q-card style="min-width: 350px" class="my-card">
                         <div class="q-pa-md text-center" >
                             <q-input
                                     hint="Paste your data here."
@@ -250,6 +273,21 @@
                                 <q-card-section>
                                     A scale of preference helps an individual, a firm or a government to make rational
                                     use of available resources to satisfy the most important want.
+                                </q-card-section>
+
+                                <q-card-section>
+                                    <div class="text-h6">Example</div>
+
+                                    <div class="text-body1 q-mb-md">From the image below you can see that the person have $500 to spend on what he want.</div>
+                                    <div class="text-body1 q-mb-md">After arranging the items according to importance
+                                        you can see that he can only by Headphone and Laptop bag. </div>
+                                    <div class="text-body1">He can't but <b>Water Bottle</b> as you can see its in White.</div>
+                                </q-card-section>
+
+                                <q-card-section>
+                                    <q-img :src="images[0]" @click="showImage(images[0])">
+
+                                    </q-img>
                                 </q-card-section>
                             </q-card>
                         </div>
@@ -340,10 +378,12 @@
                                 </q-card-section>
 
 
-                                <q-card-section>
+                                <q-card-section class="text-center">
                                     <div class="text-h6">Demo Site</div>
 
-                                    <q-btn class="q-ma-lg" icon="github" type="a" href="https://ebrayce.github.io/SOP/" label="Link to Source Code (GitHub)" push color="primary" ></q-btn>
+
+                                    <q-btn class="q-ma-lg" type="a" href="https://ebrayce.github.io/SOP/" label="View (GitHub)" push color="primary" ></q-btn>
+                                    <q-btn class="q-ma-lg" type="a" href="https://github.com/ebrayce/SOP" label="Source Code (GitHub)" push color="dark" ></q-btn>
 
                                 </q-card-section>
 
@@ -387,7 +427,8 @@
                                             </q-item-section>
                                         </q-item>
                                     </template>
-                                    <transition-group leave-active-class="animate__animated animate__backOutDown">
+                                    <transition-group :duration="600" enter-active-class="animated animate__fadeInUp animate__slow animate__delay-1s"
+                                                      leave-active-class="animate__animated animate__zoomOutDown animate__slow animate__delay-1s">
                                         <template :key="item.id" v-for="(item, index) in updateCanPurchase">
                                             <q-item :class="`${item.canBuy ? 'bg-secondary':''}`" v-ripple>
                                                 <q-item-section @click="moveDown(item.id)" avatar clickable top>
