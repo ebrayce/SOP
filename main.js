@@ -40,7 +40,7 @@ window.onload = () => {
                     menuList,
                     currencyList,
                     me: {
-                        avatar: "",
+                        avatar: "https://res.cloudinary.com/ebrayce/image/upload/v1609853242/134120747_865218274279882_770505659412948779_o.jpg_bgahnf.jpg",
                         selectedCurrency: "USD",
                         name: "Ernest Brayce",
                         username: "ebrayce",
@@ -180,11 +180,14 @@ window.onload = () => {
                     this.$q.notify({message:'Data Loaded successfully',color: 'primary'})
                 },
                 copyData(){
-                    navigator.clipboard.writeText(this.myData).then(()=>{
-                        this.$q.notify({message:'Data Copied successfully',color: 'primary'})
-                    }).catch(()=>{
-                        this.$q.notify({message:'Oops something went wrong',color: 'red'})
-                    })
+                    try{
+                        navigator.clipboard.writeText(this.myData).then(()=>{
+                            this.$q.notify({message:'Data Copied successfully',color: 'primary'})
+                        })
+                    }catch (e) {
+                        this.$q.notify({message:'Oops something went wrong. Copy the text yourself.',color: 'red'})
+                    }
+
                 },
 
                 manualDataLoad(){

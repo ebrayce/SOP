@@ -38,7 +38,7 @@
                 <q-scroll-area class="fit">
                     <div class="bg-secondary q-pa-lg">
                         <q-avatar class="q-mb-sm" size="56px">
-                            <img src="https://res.cloudinary.com/ebrayce/image/upload/v1609853242/134120747_865218274279882_770505659412948779_o.jpg_bgahnf.jpg">
+                            <img :src="me.avatar">
                         </q-avatar>
                         <div class="cursor-pointer">
                             <div class="text-weight-bold">{{me.name}} <q-btn  color="white" flat icon="edit" round
@@ -185,6 +185,15 @@
                                         lazy-rules
                                         v-model="me.username"
                                 ></q-input>
+
+                                <q-input
+                                        color="grey-3"
+                                        label-color="orange"
+                                        filled
+                                        label="Link to avatar *"
+                                        lazy-rules
+                                        v-model="me.avatar"
+                                ></q-input>
                             </q-form>
 
                         </div>
@@ -274,7 +283,7 @@
                                 <div class="text-center">
                                     <q-btn class="q-mb-md" @click="manualDataLoad" color="dark" icon="content_paste" label="Manual Load" ></q-btn>
 
-                                    <q-btn class="q-mb-md" @click="saveToBrowser" color="secondary" icon="backup" icon-right="send" label="Save Data To Browser" ></q-btn>
+                                    <q-btn class="q-mb-md" @click="saveToBrowser" color="secondary" icon="backup" label="Save Data To Browser" ></q-btn>
                                     <br>
                                     <q-btn class="q-mb-md" @click="loadFromBrowser" color="primary" icon="cloud_download" label="Load Data From Browser" ></q-btn>
 
@@ -328,6 +337,14 @@
                                         </a>
 
                                     </q-list>
+                                </q-card-section>
+
+
+                                <q-card-section>
+                                    <div class="text-h6">Demo Site</div>
+
+                                    <q-btn class="q-ma-lg" icon="github" type="a" href="https://ebrayce.github.io/SOP/" label="Link to Source Code (GitHub)" push color="primary" ></q-btn>
+
                                 </q-card-section>
 
 
