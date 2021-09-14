@@ -48,15 +48,17 @@ window.onload = () => {
                         name: "Ernest Brayce",
                         username: "ebrayce",
                         disposableIncome: 100,
+                        autoSaveToBrowser: false
                     },
                     isEditing: false,
+                    isShowingLoader: true,
                     editedItemId: undefined,
                     isShowingImageDialog: false,
                     isShowingFinanceDialog: false,
                     isShowingEditDataDialog: false,
                     isShowingAddItemDialog: false,
                     isShowingInfoDialog: false,
-                    isShowingLoader: true,
+                    isDataInBrowser: false,
                     counter: 0,
                     fixed: false,
                     drawer: true,
@@ -103,6 +105,7 @@ window.onload = () => {
                         this.items.push(Object.assign({}, this.formItem))
                     }
                     this.resetForm()
+                    this.autoSaveNow()
                     this.navigateTo(1)
                 },
                 editItemById: function (itemId) {
@@ -117,6 +120,7 @@ window.onload = () => {
                     let index = this.getItemIndex(this.editedItemId)
                     if(index >= 0){
                         this.items.splice(index, 1)
+                        this.autoSaveNow()
                     }
                     this.resetForm()
 
@@ -134,6 +138,7 @@ window.onload = () => {
                     let temp = Object.assign({}, this.items[index])
                     this.items[index] = Object.assign({}, this.items[index - 1])
                     this.items[index - 1] = Object.assign({}, temp)
+                    this.autoSaveNow()
                 },
                 moveDown(itemId){
                     //    find the index
@@ -145,6 +150,7 @@ window.onload = () => {
                     let temp = Object.assign({}, this.items[index])
                     this.items[index] = Object.assign({}, this.items[index + 1])
                     this.items[index + 1] = Object.assign({}, temp)
+                    this.autoSaveNow()
                 },
                 showFinance(){
                     this.isShowingFinanceDialog = true
@@ -169,24 +175,31 @@ window.onload = () => {
                     data.items = this.items
                     try{
                         localStorage.setItem("myData", JSON.stringify(data))
+                        this.isDataInBrowser = true;
                         this.$q.notify({message:'Data Saved successfully',color: 'primary'})
                     }catch (e) {
+                        this.me.autoSaveToBrowser = false;
                         this.$q.notify({message:'Oops An error Occurred',color: 'red'})
                     }
-
+                },
+                loadDataFromBrowser(){
+                   return  JSON.parse(localStorage.getItem("myData"))
                 },
                 loadFromBrowser(){
                     try{
-                        let data = JSON.parse(localStorage.getItem("myData"))
+                        let data = this.loadDataFromBrowser()
                         this.update(data)
                     }catch (e) {
                         this.$q.notify({message:'Oops An error Occurred',color: 'red'})
                     }
                 },
                 update(data){
-                    this.me =  Object.assign({},data.me )
-                    this.items = Array.isArray(data.items) ? data.items : []
-                    this.$q.notify({message:'Data Loaded successfully',color: 'primary'})
+                    if (!!data){
+                        this.me =  Object.assign({},data.me )
+                        this.items = Array.isArray(data.items) ? data.items : []
+                        this.$q.notify({message:'Data Loaded successfully',color: 'primary'})
+                        this.autoSaveNow()
+                    }
                 },
                 copyData(){
                     try{
@@ -196,9 +209,16 @@ window.onload = () => {
                     }catch (e) {
                         this.$q.notify({message:'Oops something went wrong. Copy the text yourself.',color: 'red'})
                     }
-
                 },
-
+                autoSaveNow(){
+                    console.log('here')
+                    if (this.me.autoSaveToBrowser){
+                        this.saveToBrowser()
+                    }
+                },
+                changeAutoSave(){
+                    this.saveToBrowser()
+                },
                 manualDataLoad(){
                     this.isShowingEditDataDialog = true
                 },
@@ -229,6 +249,12 @@ window.onload = () => {
                 },
             },
             mounted(){
+                // check if data can be loaded
+                let data = this.loadDataFromBrowser()
+                this.isDataInBrowser = !!data
+                if (this.isDataInBrowser && data.me.autoSaveToBrowser){
+                    this.loadFromBrowser()
+                }
                 this.hideLoader()
             }
         })

@@ -45,6 +45,7 @@
                             <q-btn  color="white" flat icon="edit" round size="sm"></q-btn>
                             <q-popup-edit v-model="label" auto-save v-slot="scope">
                                 <q-input
+                                        @change="autoSaveNow"
                                         color="grey-3"
                                         label-color="orange"
                                         filled
@@ -62,6 +63,7 @@
                             <q-popup-edit v-model="label" auto-save v-slot="scope">
                                 <q-input :rules="[ val => val && val.length > 0 || 'Please type something']"
                                          filled
+                                         @change="autoSaveNow"
                                          color="grey-3"
                                          label-color="orange"
                                          hint="Your full name."
@@ -78,6 +80,7 @@
                                    size="sm"></q-btn>
                             <q-popup-edit v-model="label" auto-save v-slot="scope">
                                 <q-input
+                                        @change="autoSaveNow"
                                         color="grey-3"
                                         label-color="orange"
                                         :rules="[val => val !== null && val !== '' || 'Please type your Username']"
@@ -171,7 +174,7 @@
 <!--                                         v-model="me.name"-->
 <!--                                ></q-input>-->
 
-                                <q-input class="q-mb-md" color="grey-3" label="Income" label-color="orange" filled
+                                <q-input @change="autoSaveNow" class="q-mb-md" color="grey-3" label="Income" label-color="orange" filled
                                          step="0.01" type="number" v-model.number="me.disposableIncome">
                                     <template v-slot:append>
                                         <q-icon color="primary" name="attach_money"></q-icon>
@@ -179,6 +182,7 @@
                                 </q-input>
 
                                 <q-select use-input color="grey-3"
+                                          @update:model-value="autoSaveNow"
                                           label-color="orange" input-debounce="0" behavior="menu"
                                           @filter="filterFn" filled emit-value v-model="me.selectedCurrency" :options="currencyList" label="Currency" >
                                     <template v-slot:no-option>
@@ -214,6 +218,7 @@
                         </div>
                     </q-card>
                 </q-dialog>
+
                 <q-dialog v-model="isShowingInfoDialog">
                     <q-card class="my-card">
 
@@ -297,6 +302,14 @@
                             <q-card bordered class="my-card" flat>
                                 <q-card-section>
                                     <div class="text-h6">Manage Your Data</div>
+                                    <q-toggle
+                                            @click="changeAutoSave"
+                                            v-model="me.autoSaveToBrowser"
+                                            checked-icon="check"
+                                            color="primary"
+                                            label="Auto Save"
+                                            unchecked-icon="clear"
+                                   ></q-toggle>
                                 </q-card-section>
 
                                 <div class="q-pa-md" >
@@ -323,7 +336,7 @@
 
                                     <q-btn class="q-mb-md" @click="saveToBrowser" color="secondary" icon="backup" label="Save Data To Browser" ></q-btn>
                                     <br>
-                                    <q-btn class="q-mb-md" @click="loadFromBrowser" color="primary" icon="cloud_download" label="Load Data From Browser" ></q-btn>
+                                    <q-btn class="q-mb-md" :disabled="!isDataInBrowser" @click="loadFromBrowser" color="primary" icon="cloud_download" label="Load Data From Browser" ></q-btn>
 
                                 </div>
                                 </q-card>
