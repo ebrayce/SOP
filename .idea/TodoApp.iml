@@ -9,5 +9,8 @@
     <orderEntry type="library" name="animate.css" level="application" />
     <orderEntry type="library" name="eva-icons" level="application" />
     <orderEntry type="library" name="vue-currency-filter" level="application" />
+    <orderEntry type="library" name="animate.css" level="application" />
+    <orderEntry type="library" name="quasar" level="application" />
+    <orderEntry type="library" name="vue" level="application" />
   </component>
 </module>

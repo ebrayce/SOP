@@ -406,27 +406,20 @@
 
                                 <q-separator></q-separator>
 
+                                <q-card
+                                        v-if="items.length === 0"
+                                        class="my-card animate__animated animate__backInDown"
+                                >
+                                    <q-card-section class="text-center">
+                                        <q-icon name="content_paste" class="text-primary" style="font-size: 4.4em;" />
+                                    </q-card-section>
 
-                                <q-list bordered class="rounded-borders" separator>
-                                    <template v-if="items.length === 0">
-                                        <q-item :key="n" v-for="n in 5">
-                                            <q-item-section avatar>
-                                                <q-icon name="arrow_downward" color="grey-4" class="q-mr-sm" size="18px" ></q-icon>
-                                            </q-item-section>
+                                    <q-card-section class="q-pa-lg text-center text-h6">
+                                        Your List is Empty. Start by Adding Items.
+                                    </q-card-section>
+                                </q-card>
+                                <q-list v-else bordered class="rounded-borders" separator>
 
-                                            <q-item-section>
-                                                <q-item-label>
-                                                    <q-skeleton></q-skeleton>
-                                                </q-item-label>
-                                                <q-item-label caption>
-                                                    <q-skeleton type="text" width="35%"></q-skeleton>
-                                                </q-item-label>
-                                            </q-item-section>
-                                            <q-item-section avatar>
-                                                <q-icon name="arrow_upward" color="grey-4" class="q-mr-sm" size="18px" ></q-icon>
-                                            </q-item-section>
-                                        </q-item>
-                                    </template>
                                     <transition-group :duration="600" enter-active-class="animated animate__fadeInUp animate__slow animate__delay-1s"
                                                       leave-active-class="animate__animated animate__zoomOutDown animate__slow animate__delay-1s">
                                         <template :key="item.id" v-for="(item, index) in updateCanPurchase">
