@@ -66,7 +66,6 @@ window.onload = () => {
                     state: 1,
                     editData: "",
                     imageUrl: "",
-
                     formItem: {
                         name:"",
                         price: 0
