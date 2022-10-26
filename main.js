@@ -153,13 +153,13 @@ let currencyList = [{label: "Albania Lek entirley ", value: "ALL"}, {
 }, {label: "Yemen Rial", value: "YER"}, {label: "Zimbabwe Dollar", value: "ZWD"}]
 
 window.onload = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
         const app = Vue.createApp({
             data() {
                 return {
                     menuList,
                     currencyList,
-                    images:[
+                    images: [
                         'https://res.cloudinary.com/ebrayce/image/upload/v1628870060/Screenshot_08-13-2021_15.54.06_oymrwn.png'
                     ],
                     me: {
@@ -186,40 +186,42 @@ window.onload = () => {
                     state: 1,
                     editData: "",
                     imageUrl: "",
+
+                    dataFile: null,
                     formItem: {
-                        name:"",
+                        name: "",
                         price: 0
                     },
                     defaultFormItem: {
-                        name:"",
+                        name: "",
                         price: 0
                     }
                 }
             },
-            methods:{
-                navigateTo(id){
+            methods: {
+                navigateTo(id) {
                     this.state = id
                     this.drawer = false
                 },
-                showImage(img){
+                showImage(img) {
                     this.imageUrl = img
                     this.isShowingImageDialog = true;
                 },
-                hideLoader(){
+                hideLoader() {
                     this.isShowingLoader = false;
                 },
-                showAddItemDialog(){
+                showAddItemDialog() {
                     this.isShowingAddItemDialog = true
                 },
-                showFinanceDialog(){
+                showFinanceDialog() {
                     this.isShowingAddItemDialog = true
                 },
-                addToItems(){
+                addToItems() {
                     this.isShowingAddItemDialog = false
-                    if (this.isEditing){
+                    if (this.isEditing) {
                         let index = this.getItemIndex(this.formItem.id)
-                        this.items.splice(index,1, Object.assign({},this.formItem))
-                    }else {
+                        this.items.splice(index, 1, Object.assign({}, this.formItem))
+                    } else {
                         this.formItem.id = Date.now().toString()
                         this.items.push(Object.assign({}, this.formItem))
                     }
@@ -235,22 +237,22 @@ window.onload = () => {
                     this.editedItemId = itemId
                     this.showAddItemDialog()
                 },
-                removeItemById(){
+                removeItemById() {
                     let index = this.getItemIndex(this.editedItemId)
-                    if(index >= 0){
+                    if (index >= 0) {
                         this.items.splice(index, 1)
                         this.autoSaveNow()
                     }
                     this.resetForm()
 
                 },
-                getItemIndex(itemId){
+                getItemIndex(itemId) {
                     return this.items.findIndex(i => i.id === itemId)
                 },
-                moveUp(itemId){
+                moveUp(itemId) {
                     //    find the index
                     let index = this.getItemIndex(itemId)
-                    if (index === 0){
+                    if (index === 0) {
                         return
                     }
                     //    swap with the one above
@@ -259,10 +261,10 @@ window.onload = () => {
                     this.items[index - 1] = Object.assign({}, temp)
                     this.autoSaveNow()
                 },
-                moveDown(itemId){
+                moveDown(itemId) {
                     //    find the index
                     let index = this.getItemIndex(itemId)
-                    if (index === this.items.length - 1){
+                    if (index === this.items.length - 1) {
                         return
                     }
                     //    swap with the one above
@@ -271,16 +273,16 @@ window.onload = () => {
                     this.items[index + 1] = Object.assign({}, temp)
                     this.autoSaveNow()
                 },
-                showFinance(){
+                showFinance() {
                     this.isShowingFinanceDialog = true
                 },
-                filterFn (val, update) {
+                filterFn(val, update) {
                     update(() => {
                         const needle = val.toLocaleLowerCase()
                         this.currencyList = currencyList.filter(v => v.label.toLocaleLowerCase().indexOf(needle) > -1 || v.value.toLocaleLowerCase().indexOf(needle) > -1)
                     })
                 },
-                resetForm(){
+                resetForm() {
                     this.formItem.name = ""
                     this.formItem.price = 0
                     this.isEditing = false
@@ -350,34 +352,35 @@ window.onload = () => {
                         this.autoSaveNow()
                     }
                 },
-                copyData(){
-                    try{
-                        navigator.clipboard.writeText(this.myData).then(()=>{
-                            this.$q.notify({message:'Data Copied successfully',color: 'primary'})
+                copyData() {
+                    try {
+                        navigator.clipboard.writeText(this.myData).then(() => {
+                            this.$q.notify({message: 'Data Copied successfully', color: 'primary'})
                         })
-                    }catch (e) {
-                        this.$q.notify({message:'Oops something went wrong. Copy the text yourself.',color: 'red'})
+                    } catch (e) {
+                        this.$q.notify({message: 'Oops something went wrong. Copy the text yourself.', color: 'red'})
                     }
                 },
-                autoSaveNow(){
-                    console.log('here')
-                    if (this.me.autoSaveToBrowser){
+                autoSaveNow() {
+                    if (this.me.autoSaveToBrowser) {
                         this.saveToBrowser()
                     }
                 },
-                changeAutoSave(){
+                changeAutoSave() {
                     this.saveToBrowser()
                 },
-                manualDataLoad(){
+                manualDataLoad() {
+                    this.editData = null;
+                    this.dataFile = null;
                     this.isShowingEditDataDialog = true
                 },
-                manualDataLoadSubmit(){
+                manualDataLoadSubmit() {
                     this.isShowingEditDataDialog = false
                     try {
                         let data = JSON.parse(this.editData)
                         this.update(data)
-                    }catch (e) {
-                        this.$q.notify({message:'Oops Data Corrupted',color: 'red'})
+                    } catch (e) {
+                        this.$q.notify({message: 'Oops Data Corrupted', color: 'red'})
                     }
                 },
             },
@@ -396,7 +399,7 @@ window.onload = () => {
                     data.items = Object.assign({}, this.items)
                     return JSON.stringify(data)
                 },
-                updateCanPurchase(){
+                updateCanPurchase() {
                     let disposableIncome = this.me.disposableIncome
                     this.items.forEach(item => {
                         item.canBuy = disposableIncome >= item.price
@@ -405,11 +408,11 @@ window.onload = () => {
                     return this.items
                 },
             },
-            mounted(){
+            mounted() {
                 // check if data can be loaded
                 let data = this.loadDataFromBrowser()
                 this.isDataInBrowser = !!data
-                if (this.isDataInBrowser && data.me.autoSaveToBrowser){
+                if (this.isDataInBrowser && data.me.autoSaveToBrowser) {
                     this.loadFromBrowser()
                 }
                 this.hideLoader()
