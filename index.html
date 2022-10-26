@@ -164,15 +164,15 @@
                                     @submit="onSubmit"
                                     class="q-gutter-md"
                             >
-<!--                                <q-input :rules="[ val => val && val.length > 0 || 'Please type something']"-->
-<!--                                         filled-->
-<!--                                         color="grey-3"-->
-<!--                                         label-color="orange"-->
-<!--                                         hint="Your full name."-->
-<!--                                         label="Your name *"-->
-<!--                                         lazy-rules-->
-<!--                                         v-model="me.name"-->
-<!--                                ></q-input>-->
+                                <!--                                <q-input :rules="[ val => val && val.length > 0 || 'Please type something']"-->
+                                <!--                                         filled-->
+                                <!--                                         color="grey-3"-->
+                                <!--                                         label-color="orange"-->
+                                <!--                                         hint="Your full name."-->
+                                <!--                                         label="Your name *"-->
+                                <!--                                         lazy-rules-->
+                                <!--                                         v-model="me.name"-->
+                                <!--                                ></q-input>-->
 
                                 <q-input @change="autoSaveNow" class="q-mb-md" color="grey-3" label="Income" label-color="orange" filled
                                          step="0.01" type="number" v-model.number="me.disposableIncome">
@@ -415,6 +415,7 @@
                                         <q-btn @click="showFinance" color="white" flat icon="edit" round
                                                size="sm"></q-btn>
                                     </div>
+                                    <div  class="text-subtitle2 text-brown">Balance: {{ $filters.currency(balance, me.selectedCurrency) }}</div>
                                 </q-card-section>
 
                                 <q-separator></q-separator>
