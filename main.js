@@ -288,35 +288,65 @@ window.onload = () => {
                     this.isShowingAddItemDialog = false
                     this.formItem = Object.assign({}, this.defaultFormItem)
                 },
-                saveToBrowser(){
+                buildData() {
                     let data = {}
                     data.me = Object.assign({}, this.me)
                     data.items = this.items
-                    try{
-                        localStorage.setItem("myData", JSON.stringify(data))
+                    return JSON.stringify(data);
+                },
+                saveToBrowser() {
+                    try {
+                        localStorage.setItem("myData", this.buildData())
                         this.isDataInBrowser = true;
-                        this.$q.notify({message:'Data Saved successfully',color: 'primary'})
-                    }catch (e) {
+                        this.$q.notify({message: 'Data Saved successfully', color: 'primary'})
+                    } catch (e) {
                         this.me.autoSaveToBrowser = false;
-                        this.$q.notify({message:'Oops An error Occurred',color: 'red'})
+                        this.$q.notify({message: 'Oops An error Occurred', color: 'red'})
                     }
                 },
-                loadDataFromBrowser(){
-                   return  JSON.parse(localStorage.getItem("myData"))
+                loadDataFromBrowser() {
+                    return JSON.parse(localStorage.getItem("myData"))
                 },
-                loadFromBrowser(){
-                    try{
+                loadFromBrowser() {
+                    try {
                         let data = this.loadDataFromBrowser()
                         this.update(data)
-                    }catch (e) {
-                        this.$q.notify({message:'Oops An error Occurred',color: 'red'})
+                    } catch (e) {
+                        this.$q.notify({message: 'Oops An error Occurred', color: 'red'})
                     }
                 },
-                update(data){
-                    if (!!data){
-                        this.me =  Object.assign({},data.me )
+                downloadDataAsFile() {
+                    this.downloadFile(this.buildData())
+                },
+                loadDataFromFile() {
+                    const reader = new FileReader();
+
+                    reader.addEventListener("load", () => {
+                        this.editData = reader.result
+                    }, false);
+
+                    if (this.dataFile) {
+                        reader.readAsText(this.dataFile);
+                    }
+
+                },
+                downloadFile(content, fileName = 'appData') {
+                    const element = document.createElement('a');
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+                    element.setAttribute('download', fileName);
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+                },
+                update(data) {
+                    if (!!data) {
+                        this.me = Object.assign({}, data.me)
                         this.items = Array.isArray(data.items) ? data.items : []
-                        this.$q.notify({message:'Data Loaded successfully',color: 'primary'})
+                        this.$q.notify({message: 'Data Loaded successfully', color: 'primary'})
                         this.autoSaveNow()
                     }
                 },
@@ -352,7 +382,15 @@ window.onload = () => {
                 },
             },
             computed: {
-                myData(){
+                itemsTotal() {
+                    return this.items.filter(item => item.canBuy).reduce((pre, curr) => {
+                        return pre + curr.price
+                    }, 0)
+                },
+                balance() {
+                    return this.me.disposableIncome - this.itemsTotal
+                },
+                myData() {
                     let data = {}
                     data.me = Object.assign({}, this.me)
                     data.items = Object.assign({}, this.items)
