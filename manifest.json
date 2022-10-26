@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "SOP/index.html",
   "theme_color": "#F2994B",
   "background_color": "#F2994B",
   "display": "standalone"
