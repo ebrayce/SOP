@@ -182,7 +182,7 @@
                                 <!--                                ></q-input>-->
 
                                 <q-input @change="autoSaveNow" class="q-mb-md" color="grey-3" label="Income" label-color="orange" filled
-                                         step="0.01" type="number" v-model.number="me.disposableIncome">
+                                         step="0.01" type="number" v-model.number="activeBudget.income">
                                     <template v-slot:append>
                                         <q-icon color="primary" name="attach_money"></q-icon>
                                     </template>
@@ -223,6 +223,33 @@
                             </q-form>
 
                         </div>
+                    </q-card>
+                </q-dialog>
+
+                <q-dialog persistent position="top" v-model="isShowingBudgetDialog">
+                    <q-card class="q-px-lg" style="min-width: 350px">
+                        <q-form @submit="submitBudgetDialog" class="q-gutter-md">
+                            <q-toolbar>
+                                <q-toolbar-title class="text-h6 text-center text-primary">
+                                    {{ budgetDialogMode === 'rename' ? 'Rename Budget' : budgetDialogMode === 'duplicate' ? 'Duplicate Budget' : 'New Budget' }}
+                                </q-toolbar-title>
+                                <q-btn dense flat icon="close" round v-close-popup></q-btn>
+                            </q-toolbar>
+
+                            <q-input :rules="[ val => val && val.trim().length > 0 || 'Please type a name']"
+                                     autofocus class="q-my-sm" color="grey-3" hint="e.g. November 2026"
+                                     label="Budget Name" label-color="orange" lazy-rules outlined
+                                     v-model="budgetForm.name">
+                                <template v-slot:append>
+                                    <q-icon color="primary" name="list_alt"></q-icon>
+                                </template>
+                            </q-input>
+
+                            <q-card-actions class="text-primary justify-end">
+                                <q-btn :label="budgetDialogMode === 'rename' ? 'Rename' : 'Create'" color="primary"
+                                       outlined type="submit"></q-btn>
+                            </q-card-actions>
+                        </q-form>
                     </q-card>
                 </q-dialog>
 
@@ -426,8 +453,39 @@
 
                             <q-card class="my-card">
                                 <q-card-section class="bg-primary text-white">
-                                    <div class="text-h6">List Of Items</div>
-                                    <div class="text-subtitle2">Income: {{ $filters.currency(me.disposableIncome,
+                                    <div class="row items-center no-wrap">
+                                        <q-select :model-value="activeBudgetId" :options="budgetOptions"
+                                                  @update:model-value="selectBudget" borderless class="col"
+                                                  dark dense emit-value label="Budget"
+                                                  label-color="white" map-options options-dense>
+                                            <template v-slot:selected>
+                                                <div class="text-h6 ellipsis">{{ activeBudget.name }}</div>
+                                            </template>
+                                        </q-select>
+                                        <q-btn color="white" flat icon="more_vert" round>
+                                            <q-menu auto-close>
+                                                <q-list style="min-width: 180px">
+                                                    <q-item @click="showBudgetDialog('create')" clickable>
+                                                        <q-item-section avatar><q-icon name="add"></q-icon></q-item-section>
+                                                        <q-item-section>New Budget</q-item-section>
+                                                    </q-item>
+                                                    <q-item @click="showBudgetDialog('duplicate')" clickable>
+                                                        <q-item-section avatar><q-icon name="content_copy"></q-icon></q-item-section>
+                                                        <q-item-section>Duplicate Budget</q-item-section>
+                                                    </q-item>
+                                                    <q-item @click="showBudgetDialog('rename')" clickable>
+                                                        <q-item-section avatar><q-icon name="edit"></q-icon></q-item-section>
+                                                        <q-item-section>Rename Budget</q-item-section>
+                                                    </q-item>
+                                                    <q-item :disable="budgets.length <= 1" @click="deleteActiveBudget" clickable>
+                                                        <q-item-section avatar><q-icon color="red" name="delete"></q-icon></q-item-section>
+                                                        <q-item-section class="text-red">Delete Budget</q-item-section>
+                                                    </q-item>
+                                                </q-list>
+                                            </q-menu>
+                                        </q-btn>
+                                    </div>
+                                    <div class="text-subtitle2">Income: {{ $filters.currency(activeBudget.income,
                                         me.selectedCurrency) }}
                                         <q-btn @click="showFinance" color="white" flat icon="edit" round
                                                size="sm"></q-btn>
@@ -497,7 +555,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.umd.prod.js"></script>
-<script src="main.js?1234e3"></script>
+<script src="main.js?5b1d02"></script>
 
 </body>
 </html>
