@@ -378,6 +378,112 @@ window.onload = () => {
                         this.autoSaveNow()
                     })
                 },
+                downloadBudgetImage() {
+                    const budget = this.activeBudget
+                    const items = this.updateCanPurchase
+                    const money = value => this.$filters.currency(value, this.me.selectedCurrency)
+                    const font = (weight, size) => `${weight} ${size}px Roboto, -apple-system, "Segoe UI", sans-serif`
+                    const colors = {primary: '#F2994B', secondary: '#F2BF80', dark: '#2B3240', grey: '#8596A6', line: '#E0E0E0'}
+
+                    const width = 720, padding = 32, headerHeight = 150, rowHeight = 64, footerHeight = 56
+                    const listHeight = Math.max(items.length, 1) * rowHeight
+                    const height = headerHeight + listHeight + footerHeight
+                    const scale = 2
+
+                    const canvas = document.createElement('canvas')
+                    canvas.width = width * scale
+                    canvas.height = height * scale
+                    const ctx = canvas.getContext('2d')
+                    ctx.scale(scale, scale)
+                    ctx.textBaseline = 'middle'
+
+                    const fitText = (text, maxWidth) => {
+                        if (ctx.measureText(text).width <= maxWidth) {
+                            return text
+                        }
+                        while (text.length > 0 && ctx.measureText(text + '…').width > maxWidth) {
+                            text = text.slice(0, -1)
+                        }
+                        return text + '…'
+                    }
+
+                    ctx.fillStyle = '#FFFFFF'
+                    ctx.fillRect(0, 0, width, height)
+
+                    // Header
+                    ctx.fillStyle = colors.primary
+                    ctx.fillRect(0, 0, width, headerHeight)
+                    ctx.fillStyle = '#FFFFFF'
+                    ctx.font = font(500, 14)
+                    ctx.fillText('SCALE OF PREFERENCE', padding, 32)
+                    ctx.font = font(700, 30)
+                    ctx.fillText(fitText(budget.name, width - padding * 2), padding, 68)
+                    ctx.font = font(500, 18)
+                    ctx.fillText(`Income: ${money(budget.income)}`, padding, 112)
+                    ctx.fillStyle = colors.dark
+                    ctx.textAlign = 'right'
+                    ctx.fillText(`Balance: ${money(this.balance)}`, width - padding, 112)
+                    ctx.textAlign = 'left'
+
+                    // Items
+                    if (items.length === 0) {
+                        ctx.fillStyle = colors.grey
+                        ctx.font = font(400, 18)
+                        ctx.textAlign = 'center'
+                        ctx.fillText('This list is empty.', width / 2, headerHeight + rowHeight / 2)
+                        ctx.textAlign = 'left'
+                    }
+                    items.forEach((item, index) => {
+                        const top = headerHeight + index * rowHeight
+                        const middle = top + rowHeight / 2
+                        if (item.canBuy) {
+                            ctx.fillStyle = colors.secondary
+                            ctx.fillRect(0, top, width, rowHeight)
+                        }
+                        ctx.fillStyle = colors.line
+                        ctx.fillRect(0, top + rowHeight - 1, width, 1)
+
+                        ctx.fillStyle = item.canBuy ? colors.dark : colors.grey
+                        ctx.font = font(700, 18)
+                        ctx.fillText(`${index + 1}.`, padding, middle)
+
+                        const price = money(item.price)
+                        ctx.font = font(500, 18)
+                        const priceWidth = ctx.measureText(price).width
+                        ctx.textAlign = 'right'
+                        ctx.fillText(price, width - padding, middle)
+                        ctx.textAlign = 'left'
+
+                        ctx.font = font(400, 18)
+                        const nameLeft = padding + 44
+                        ctx.fillText(fitText(item.name, width - padding - priceWidth - 24 - nameLeft), nameLeft, middle)
+                    })
+
+                    // Footer
+                    const footerTop = headerHeight + listHeight
+                    ctx.fillStyle = colors.grey
+                    ctx.font = font(400, 14)
+                    ctx.fillText('Highlighted items fit within your income', padding, footerTop + footerHeight / 2)
+                    ctx.textAlign = 'right'
+                    ctx.fillText('ebrayce.github.io/SOP', width - padding, footerTop + footerHeight / 2)
+                    ctx.textAlign = 'left'
+
+                    canvas.toBlob(blob => {
+                        if (!blob) {
+                            this.$q.notify({message: 'Oops An error Occurred', color: 'red'})
+                            return
+                        }
+                        const fileName = (budget.name.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '') || 'budget') + '.png'
+                        const url = URL.createObjectURL(blob)
+                        const element = document.createElement('a')
+                        element.href = url
+                        element.download = fileName
+                        document.body.appendChild(element)
+                        element.click()
+                        document.body.removeChild(element)
+                        setTimeout(() => URL.revokeObjectURL(url), 1000)
+                    }, 'image/png')
+                },
                 getData() {
                     return {
                         me: Object.assign({}, this.me),
