@@ -152,6 +152,38 @@ let currencyList = [{label: "Albania Lek entirley ", value: "ALL"}, {
     value: "VND"
 }, {label: "Yemen Rial", value: "YER"}, {label: "Zimbabwe Dollar", value: "ZWD"}]
 
+function createBudget(name) {
+    return {
+        id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+        name,
+        income: 100,
+        items: []
+    }
+}
+
+// Accepts both the current format ({me, budgets, activeBudgetId}) and the
+// old single-list format ({me: {disposableIncome}, items}).
+function normalizeData(data) {
+    const me = Object.assign({}, data.me)
+    let budgets = Array.isArray(data.budgets) ? data.budgets.filter(b => b && typeof b === 'object') : []
+    if (budgets.length === 0) {
+        let budget = createBudget("My Budget")
+        if (typeof me.disposableIncome === 'number') {
+            budget.income = me.disposableIncome
+        }
+        if (data.items && typeof data.items === 'object') {
+            budget.items = Object.values(data.items)
+        }
+        budgets = [budget]
+    }
+    delete me.disposableIncome
+    budgets = budgets.map(b => Object.assign(createBudget("Budget"), b, {
+        items: Array.isArray(b.items) ? b.items : []
+    }))
+    const activeBudgetId = budgets.some(b => b.id === data.activeBudgetId) ? data.activeBudgetId : budgets[0].id
+    return {me, budgets, activeBudgetId}
+}
+
 window.onload = () => {
     setTimeout(() => {
         const app = Vue.createApp({
@@ -167,8 +199,14 @@ window.onload = () => {
                         selectedCurrency: "USD",
                         name: "Ernest Brayce",
                         username: "ebrayce",
-                        disposableIncome: 100,
                         autoSaveToBrowser: false
+                    },
+                    budgets: [createBudget("My Budget")],
+                    activeBudgetId: null,
+                    isShowingBudgetDialog: false,
+                    budgetDialogMode: "create",
+                    budgetForm: {
+                        name: ""
                     },
                     isEditing: false,
                     isShowingLoader: true,
@@ -182,7 +220,6 @@ window.onload = () => {
                     counter: 0,
                     fixed: false,
                     drawer: true,
-                    items: [],
                     state: 1,
                     editData: "",
                     imageUrl: "",
@@ -290,11 +327,66 @@ window.onload = () => {
                     this.isShowingAddItemDialog = false
                     this.formItem = Object.assign({}, this.defaultFormItem)
                 },
+                selectBudget(budgetId) {
+                    this.activeBudgetId = budgetId
+                    this.autoSaveNow()
+                },
+                showBudgetDialog(mode) {
+                    this.budgetDialogMode = mode
+                    if (mode === 'rename') {
+                        this.budgetForm.name = this.activeBudget.name
+                    } else if (mode === 'duplicate') {
+                        this.budgetForm.name = this.activeBudget.name + " (Copy)"
+                    } else {
+                        this.budgetForm.name = ""
+                    }
+                    this.isShowingBudgetDialog = true
+                },
+                submitBudgetDialog() {
+                    const name = this.budgetForm.name.trim()
+                    if (!name) {
+                        return
+                    }
+                    if (this.budgetDialogMode === 'rename') {
+                        this.activeBudget.name = name
+                    } else {
+                        let budget = createBudget(name)
+                        if (this.budgetDialogMode === 'duplicate') {
+                            budget.income = this.activeBudget.income
+                            budget.items = this.activeBudget.items.map((item, index) => Object.assign({}, item, {id: budget.id + '-' + index}))
+                        }
+                        this.budgets.push(budget)
+                        this.activeBudgetId = budget.id
+                    }
+                    this.isShowingBudgetDialog = false
+                    this.autoSaveNow()
+                },
+                deleteActiveBudget() {
+                    if (this.budgets.length <= 1) {
+                        return
+                    }
+                    const budget = this.activeBudget
+                    this.$q.dialog({
+                        title: 'Delete Budget',
+                        message: `Delete "${budget.name}" and all its items?`,
+                        cancel: true,
+                        persistent: true
+                    }).onOk(() => {
+                        const index = this.budgets.findIndex(b => b.id === budget.id)
+                        this.budgets.splice(index, 1)
+                        this.activeBudgetId = this.budgets[Math.max(0, index - 1)].id
+                        this.autoSaveNow()
+                    })
+                },
+                getData() {
+                    return {
+                        me: Object.assign({}, this.me),
+                        budgets: this.budgets,
+                        activeBudgetId: this.activeBudgetId
+                    }
+                },
                 buildData() {
-                    let data = {}
-                    data.me = Object.assign({}, this.me)
-                    data.items = this.items
-                    return JSON.stringify(data);
+                    return JSON.stringify(this.getData());
                 },
                 saveToBrowser() {
                     try {
@@ -346,8 +438,10 @@ window.onload = () => {
                 },
                 update(data) {
                     if (!!data) {
-                        this.me = Object.assign({}, data.me)
-                        this.items = Array.isArray(data.items) ? data.items : []
+                        data = normalizeData(data)
+                        this.me = data.me
+                        this.budgets = data.budgets
+                        this.activeBudgetId = data.activeBudgetId
                         this.$q.notify({message: 'Data Loaded successfully', color: 'primary'})
                         this.autoSaveNow()
                     }
@@ -385,22 +479,28 @@ window.onload = () => {
                 },
             },
             computed: {
+                activeBudget() {
+                    return this.budgets.find(b => b.id === this.activeBudgetId) || this.budgets[0]
+                },
+                budgetOptions() {
+                    return this.budgets.map(b => ({label: b.name, value: b.id}))
+                },
+                items() {
+                    return this.activeBudget.items
+                },
                 itemsTotal() {
                     return this.items.filter(item => item.canBuy).reduce((pre, curr) => {
                         return pre + curr.price
                     }, 0)
                 },
                 balance() {
-                    return this.me.disposableIncome - this.itemsTotal
+                    return this.activeBudget.income - this.itemsTotal
                 },
                 myData() {
-                    let data = {}
-                    data.me = Object.assign({}, this.me)
-                    data.items = Object.assign({}, this.items)
-                    return JSON.stringify(data)
+                    return this.buildData()
                 },
                 updateCanPurchase() {
-                    let disposableIncome = this.me.disposableIncome
+                    let disposableIncome = this.activeBudget.income
                     this.items.forEach(item => {
                         item.canBuy = disposableIncome >= item.price
                         disposableIncome -= item.price
@@ -409,6 +509,7 @@ window.onload = () => {
                 },
             },
             mounted() {
+                this.activeBudgetId = this.budgets[0].id
                 // check if data can be loaded
                 let data = this.loadDataFromBrowser()
                 this.isDataInBrowser = !!data
