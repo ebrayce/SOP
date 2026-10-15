@@ -545,6 +545,6 @@ window.onload = () => {
             }
         })
         app.mount('#q-app')
-    }, 2000)
+    }, 0)
 
 };

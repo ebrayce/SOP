@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://ebrayce.github.io/SOP/sitemap.xml
