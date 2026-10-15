@@ -551,6 +551,10 @@
                                                         <q-item-section avatar><q-icon name="edit"></q-icon></q-item-section>
                                                         <q-item-section>Rename Budget</q-item-section>
                                                     </q-item>
+                                                    <q-item @click="downloadBudgetImage" clickable>
+                                                        <q-item-section avatar><q-icon name="image"></q-icon></q-item-section>
+                                                        <q-item-section>Download as Image</q-item-section>
+                                                    </q-item>
                                                     <q-item :disable="budgets.length <= 1" @click="deleteActiveBudget" clickable>
                                                         <q-item-section avatar><q-icon color="red" name="delete"></q-icon></q-item-section>
                                                         <q-item-section class="text-red">Delete Budget</q-item-section>
@@ -682,7 +686,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.umd.prod.js"></script>
-<script src="main.js?8a2f60"></script>
+<script src="main.js?c31a7d"></script>
 
 </body>
 </html>
