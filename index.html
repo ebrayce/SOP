@@ -3,15 +3,89 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet"
           type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@^4.1.1/animate.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.prod.css" rel="stylesheet" type="text/css">
-    <link href="app.css?223de3" rel="stylesheet" type="text/css">
-    <title>Scale of Preference Calculator - Organize Your Priorities</title>
-    <meta name="description" content="A free and easy-to-use app for calculating the scale of preference. Perfect for students, educators, and anyone looking to prioritize decisions effectively.">
-    <meta name="keywords" content="scale of preference calculator, decision-making app, priority ranking tool, economics calculator, free ranking app, budget calculator">
+    <link href="app.css?7c4e19" rel="stylesheet" type="text/css">
+    <title>Scale of Preference Calculator - Free Budget &amp; Priority Tool</title>
+    <meta name="description" content="Free scale of preference calculator. List your wants, rank them by importance and instantly see what your income can buy. Save separate budgets for each month.">
+    <meta name="keywords" content="scale of preference calculator, scale of preference, opportunity cost, budget planner, priority ranking tool, economics calculator">
     <meta name="author" content="Ernest Brayce">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#F2994B">
+    <link rel="canonical" href="https://ebrayce.github.io/SOP/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Scale of Preference Calculator">
+    <meta property="og:title" content="Scale of Preference Calculator - Free Budget &amp; Priority Tool">
+    <meta property="og:description" content="Rank your wants by importance and instantly see what your income can buy. Free, no sign-up.">
+    <meta property="og:url" content="https://ebrayce.github.io/SOP/">
+    <meta property="og:image" content="https://res.cloudinary.com/ebrayce/image/upload/v1628870060/Screenshot_08-13-2021_15.54.06_oymrwn.png">
+    <meta property="og:image:alt" content="Scale of preference list showing which items fit within a $500 income">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Scale of Preference Calculator - Free Budget &amp; Priority Tool">
+    <meta name="twitter:description" content="Rank your wants by importance and instantly see what your income can buy. Free, no sign-up.">
+    <meta name="twitter:image" content="https://res.cloudinary.com/ebrayce/image/upload/v1628870060/Screenshot_08-13-2021_15.54.06_oymrwn.png">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "@id": "https://ebrayce.github.io/SOP/#app",
+                "name": "Scale of Preference Calculator",
+                "url": "https://ebrayce.github.io/SOP/",
+                "description": "Free scale of preference calculator. List your wants, rank them by importance and see what your income can buy. Save separate budgets for each month.",
+                "applicationCategory": "FinanceApplication",
+                "operatingSystem": "Any",
+                "browserRequirements": "Requires JavaScript",
+                "isAccessibleForFree": true,
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+                "screenshot": "https://res.cloudinary.com/ebrayce/image/upload/v1628870060/Screenshot_08-13-2021_15.54.06_oymrwn.png",
+                "featureList": [
+                    "Rank wants and needs in order of importance",
+                    "See which items your income can afford",
+                    "Multiple named budgets, each with its own list",
+                    "Over 100 currencies",
+                    "Save to the browser or export to a file"
+                ],
+                "author": {"@type": "Person", "name": "Ernest Brayce", "url": "https://github.com/ebrayce"}
+            },
+            {
+                "@type": "FAQPage",
+                "@id": "https://ebrayce.github.io/SOP/#faq",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "What is a scale of preference?",
+                        "acceptedAnswer": {"@type": "Answer", "text": "A scale of preference is a list of a person's wants or needs arranged in order of importance, with the most pressing want at the top."}
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Why is a scale of preference important?",
+                        "acceptedAnswer": {"@type": "Answer", "text": "It helps an individual, a firm or a government make rational use of limited resources by satisfying the most important wants first."}
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "How is a scale of preference related to opportunity cost?",
+                        "acceptedAnswer": {"@type": "Answer", "text": "When income runs out, the first item on the scale of preference that cannot be bought is the opportunity cost: the next best alternative given up."}
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is this scale of preference calculator free?",
+                        "acceptedAnswer": {"@type": "Answer", "text": "Yes. It is free, needs no sign-up, and keeps your data in your own browser."}
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
     <link rel="apple-touch-icon" sizes="180x180" href="src/img/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="src/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="src/img/favicon/favicon-16x16.png">
@@ -47,7 +121,7 @@
 
                         <div class="cursor-pointer">
                             <q-avatar class="q-mb-sm" size="56px">
-                                <img :src="me.avatar">
+                                <img :src="me.avatar" alt="Profile picture">
                             </q-avatar>
                             <q-btn  color="white" flat icon="edit" round size="sm"></q-btn>
                             <q-popup-edit v-model="label" auto-save v-slot="scope">
@@ -261,7 +335,7 @@
 
                 <q-dialog  v-model="isShowingImageDialog">
                     <q-card style="min-width: 350px" class="my-card" >
-                        <q-img  :src="imageUrl" fit="scale-down"  >
+                        <q-img  :src="imageUrl" alt="Scale of preference example, enlarged" fit="scale-down"  >
                             <q-btn class="absolute all-pointer-events"  style="top: 8px; right: 8px" dense flat icon="close" round v-close-popup></q-btn>
                         </q-img>
                     </q-card>
@@ -330,7 +404,7 @@
                                 </q-card-section>
 
                                 <q-card-section>
-                                    <q-img :src="images[0]" @click="showImage(images[0])">
+                                    <q-img :src="images[0]" alt="Scale of preference example: items ranked by importance against a $500 income" @click="showImage(images[0])">
 
                                     </q-img>
                                 </q-card-section>
@@ -553,9 +627,62 @@
 
 </div>
 
+<main class="seo-content">
+    <article>
+        <h1>Scale of Preference Calculator</h1>
+        <p>
+            This free scale of preference calculator helps you decide what to buy first. List your wants and needs,
+            arrange them in order of importance, enter your income, and the app instantly highlights the items you can
+            afford. Everything below the line shows what you will have to give up.
+        </p>
+
+        <h2>What is a scale of preference?</h2>
+        <p>
+            A scale of preference is a list of a person's wants or needs arranged in order of importance, with the most
+            pressing want at the top. Because resources such as money and time are limited, a scale of preference makes
+            it clear which wants should be satisfied first.
+        </p>
+
+        <h2>Why is a scale of preference important?</h2>
+        <ul>
+            <li>It helps individuals, firms and governments make rational use of limited resources.</li>
+            <li>It makes sure the most important wants are satisfied before less important ones.</li>
+            <li>It shows the <strong>opportunity cost</strong> of a choice: the next best alternative given up.</li>
+            <li>It prevents impulse spending and makes budgeting easier.</li>
+        </ul>
+
+        <h2>How to use the scale of preference calculator</h2>
+        <ol>
+            <li>Set your income and currency from the edit button next to <em>Income</em>.</li>
+            <li>Tap <strong>+</strong> to add each item you want, with its price.</li>
+            <li>Use the up and down arrows to arrange items from most to least important.</li>
+            <li>Highlighted items fit within your income; the rest cannot be bought this time.</li>
+            <li>Create a separate named budget for each month, or duplicate one to start next month's list.</li>
+        </ol>
+
+        <h2>Scale of preference example</h2>
+        <p>
+            Suppose you have $500 and want a headphone ($150), a laptop bag ($250) and a water bottle ($120), in that
+            order. The headphone and laptop bag cost $400 together, leaving $100, which is not enough for the water
+            bottle. The water bottle is the opportunity cost of your choice.
+        </p>
+
+        <h2>Frequently asked questions</h2>
+        <h3>How is a scale of preference related to opportunity cost?</h3>
+        <p>
+            When your income runs out, the first item on the scale of preference that cannot be bought is the
+            opportunity cost: the next best alternative you give up.
+        </p>
+        <h3>Is this scale of preference calculator free?</h3>
+        <p>Yes. It is free, needs no sign-up, and keeps your data in your own browser.</p>
+        <h3>Can I keep more than one list?</h3>
+        <p>Yes. Create as many named budgets as you need, for example one per month, each with its own items and income.</p>
+    </article>
+</main>
+
 <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.umd.prod.js"></script>
-<script src="main.js?5b1d02"></script>
+<script src="main.js?8a2f60"></script>
 
 </body>
 </html>
