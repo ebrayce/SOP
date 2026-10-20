@@ -184,6 +184,24 @@ function normalizeData(data) {
     return {me, budgets, activeBudgetId}
 }
 
+// PWA: offline support and install prompt.
+// beforeinstallprompt can fire before Vue mounts, so it is captured here.
+let deferredInstallPrompt = null
+window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault()
+    deferredInstallPrompt = event
+    window.dispatchEvent(new Event('sop-installable'))
+})
+window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null
+    window.dispatchEvent(new Event('sop-installable'))
+})
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => undefined)
+    })
+}
+
 window.onload = () => {
     setTimeout(() => {
         const app = Vue.createApp({
@@ -217,6 +235,7 @@ window.onload = () => {
                     isShowingAddItemDialog: false,
                     isShowingInfoDialog: false,
                     isDataInBrowser: false,
+                    canInstall: false,
                     counter: 0,
                     fixed: false,
                     drawer: true,
@@ -484,6 +503,17 @@ window.onload = () => {
                         setTimeout(() => URL.revokeObjectURL(url), 1000)
                     }, 'image/png')
                 },
+                async installApp() {
+                    if (!deferredInstallPrompt) {
+                        return
+                    }
+                    const prompt = deferredInstallPrompt
+                    prompt.prompt()
+                    // A prompt can only be shown once; the browser fires a new one if it is still installable.
+                    deferredInstallPrompt = null
+                    this.canInstall = false
+                    await prompt.userChoice
+                },
                 getData() {
                     return {
                         me: Object.assign({}, this.me),
@@ -615,6 +645,9 @@ window.onload = () => {
                 },
             },
             mounted() {
+                const updateCanInstall = () => this.canInstall = !!deferredInstallPrompt
+                updateCanInstall()
+                window.addEventListener('sop-installable', updateCanInstall)
                 this.activeBudgetId = this.budgets[0].id
                 // check if data can be loaded
                 let data = this.loadDataFromBrowser()

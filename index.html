@@ -89,7 +89,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="src/img/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="src/img/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="src/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="manifest.json?43l00">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="SOP">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 
 <body class="bg-grey-3">
@@ -185,6 +189,18 @@
                                 </q-item-section>
                             </q-item>
                             <q-separator :key="'sep' + index" v-if="menuItem.separator"></q-separator>
+                        </template>
+
+                        <template v-if="canInstall">
+                            <q-item @click="installApp" clickable v-ripple>
+                                <q-item-section avatar>
+                                    <q-icon color="primary" name="install_mobile"></q-icon>
+                                </q-item-section>
+                                <q-item-section class="text-primary">
+                                    Install App
+                                </q-item-section>
+                            </q-item>
+                            <q-separator></q-separator>
                         </template>
 
                     </q-list>
@@ -686,7 +702,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.umd.prod.js"></script>
-<script src="main.js?c31a7d"></script>
+<script src="main.js?4e8b21"></script>
 
 </body>
 </html>
