@@ -94,3 +94,16 @@
     font-size: 1rem;
     margin: 0 0 8px;
 }
+
+/* Larger, easier-to-tap menus (side menu, budget menu and dropdowns) */
+.app-menu .q-item {
+    min-height: 56px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+}
+.app-menu .q-item__section--avatar {
+    min-width: 48px;
+}
+.app-menu .q-item .q-icon {
+    font-size: 28px;
+}

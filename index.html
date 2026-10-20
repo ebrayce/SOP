@@ -10,7 +10,7 @@
           type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@^4.1.1/animate.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/quasar@2.0.0/dist/quasar.prod.css" rel="stylesheet" type="text/css">
-    <link href="app.css?7c4e19" rel="stylesheet" type="text/css">
+    <link href="app.css?b6d913" rel="stylesheet" type="text/css">
     <title>Scale of Preference Calculator - Free Budget &amp; Priority Tool</title>
     <meta name="description" content="Free scale of preference calculator. List your wants, rank them by importance and instantly see what your income can buy. Save separate budgets for each month.">
     <meta name="keywords" content="scale of preference calculator, scale of preference, opportunity cost, budget planner, priority ranking tool, economics calculator">
@@ -177,7 +177,7 @@
                             </q-popup-edit>
                         </div>
                     </div>
-                    <q-list>
+                    <q-list class="app-menu">
                         <template v-for="(menuItem, index) in menuList">
                             <q-item :active="menuItem.id === state" :key="index" @click="navigateTo(menuItem.id)"
                                     clickable v-ripple>
@@ -278,7 +278,7 @@
                                     </template>
                                 </q-input>
 
-                                <q-select use-input color="grey-3"
+                                <q-select use-input color="grey-3" popup-content-class="app-menu"
                                           @update:model-value="autoSaveNow"
                                           label-color="orange" input-debounce="0" behavior="menu"
                                           @filter="filterFn" filled emit-value v-model="me.selectedCurrency" :options="currencyList" label="Currency" >
@@ -547,14 +547,14 @@
                                         <q-select :model-value="activeBudgetId" :options="budgetOptions"
                                                   @update:model-value="selectBudget" borderless class="col"
                                                   dark dense emit-value label="Budget"
-                                                  label-color="white" map-options options-dense>
+                                                  label-color="white" map-options popup-content-class="app-menu">
                                             <template v-slot:selected>
                                                 <div class="text-h6 ellipsis">{{ activeBudget.name }}</div>
                                             </template>
                                         </q-select>
                                         <q-btn color="white" flat icon="more_vert" round>
                                             <q-menu auto-close>
-                                                <q-list style="min-width: 180px">
+                                                <q-list class="app-menu" style="min-width: 260px">
                                                     <q-item @click="showBudgetDialog('create')" clickable>
                                                         <q-item-section avatar><q-icon name="add"></q-icon></q-item-section>
                                                         <q-item-section>New Budget</q-item-section>
