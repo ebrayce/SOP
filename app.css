@@ -107,3 +107,12 @@
 .app-menu .q-item .q-icon {
     font-size: 28px;
 }
+
+/* The budget picker list: extra large so budget names are easy to read */
+.budget-menu {
+    min-width: 260px;
+}
+.app-menu.budget-menu .q-item {
+    min-height: 64px;
+    font-size: 1.35rem;
+}
